@@ -12,57 +12,172 @@ import UIKit
     optional func filersViewController(filtersViewController :FiltersViewController, didUpdateFilters filters: [String:AnyObject])
 }
 
-class FiltersViewController: UIViewController ,UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate {
-
+class FiltersViewController: UIViewController ,UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate, OptionCellDelegate {
+    
     @IBOutlet weak var tableView: UITableView!
     
     weak var delegate: FiltersViewControllerDelegate?
     
+    var filters = [String : AnyObject]()
     var categories: [[String:String]]!
     var switchState = [Int: Bool]()
+    
+    var distanceArray : [Float?]!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //MARK init vaue for filter field
         categories = yelpCategories()
+        distanceArray = [nil, 0.3, 1, 5, 20]
         
         tableView.dataSource = self
         tableView.delegate = self
         
-//        tableView.rowHeight = UITableViewAutomaticDimension
-//        tableView.estimatedRowHeight = 100
+        //        tableView.rowHeight = UITableViewAutomaticDimension
+        //        tableView.estimatedRowHeight = 100
         
-
+        
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 4
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return ""
+        case 1:
+            return "Distance"
+        case 2:
+            return "Sort by"
+        case 3:
+            return "Category"
+        default:
+            return ""
+        }
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        
+        switch section {
+        case 0:
+            return 1
+        case 1:
+            return distanceArray.count
+        case 2:
+            return 3
+        case 3:
+            return categories.count
+        default:
+            break
+        }
+        return 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
-        cell.switchLabel.text = categories[indexPath.row]["name"]
-        // Detect switch change value event
-        cell.delegate = self
-        if switchState[indexPath.row] != nil {
-            cell.onSwitch.on = switchState[indexPath.row]!
+        switch indexPath.section {
+        case 0:
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
+            
+            cell.switchLabel.text = "Offering a Deal"
+            cell.delegate = self
+            cell.onSwitch.on = filters["deal"] as? Bool ?? false
+            return cell
+            
+        case 1:
+            let cell = tableView.dequeueReusableCellWithIdentifier("OptionCell", forIndexPath: indexPath) as! OptionCell
+            cell.delegate = self
+            print("Distance",indexPath.row)
+            // Set label for each cell
+            if indexPath.row == 0 {
+                cell.fieldLabel.text = "Auto"
+            }
+            else {
+                cell.fieldLabel.text =  String(format: "%g", distanceArray[indexPath.row]!) + " mile"
+            }
+            return cell
+            
+        case 2:
+            let cell = tableView.dequeueReusableCellWithIdentifier("OptionCell", forIndexPath: indexPath) as! OptionCell
+            cell.delegate = self
+            switch indexPath.row {
+            case 0:
+                cell.fieldLabel.text = "Best Match"
+                break
+            case 1:
+                cell.fieldLabel.text = "Distance"
+                break
+            case 2:
+                cell.fieldLabel.text = "Rating"
+                break
+            default:
+                break
+            }
+            return cell
+        case 3:
+            let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
+            cell.switchLabel.text = categories[indexPath.row]["name"]
+            // Detect switch change value event
+            cell.delegate = self
+            if switchState[indexPath.row] != nil {
+                cell.onSwitch.on = switchState[indexPath.row]!
+            }
+            //        print("cell \(indexPath.row)",cell.onSwitch.on)
+            
+            
+            return cell
+        default:
+            let cell = UITableViewCell()
+            return cell
         }
-        print("cell \(indexPath.row)",cell.onSwitch.on)
-        
-        
-        return cell
     }
     
     func switchCell(switchCell: SwitchCell, didChangeVaue value: Bool) {
         let indexPath = tableView.indexPathForCell(switchCell)!
-        switchState[indexPath.row] = value
-        
+        switch indexPath.section {
+        case 0:
+            filters["deal"] = value
+            break;
+        case 3:
+            switchState[indexPath.row] = value
+            break;
+        default:
+            break;
+            
+        }
+    }
+    
+    func optionCell(optionCell: OptionCell, onRowSelect selected: Bool) {
+        //        let indexPath = tableView.indexPathForCell(optionCell)'
+
+        let index = tableView.indexPathForCell(optionCell)
+        if index != nil {
+            switch index!.section {
+            case 1:
+                if selected == true {
+                    filters["distance"] = distanceArray[index!.row]
+                }
+                break;
+            case 2:
+                if selected == true {
+                    filters["sort"] = optionCell.fieldLabel.text
+                }
+                break;
+            default:
+                break;
+            }
+            
+        }
     }
     
     
@@ -73,8 +188,17 @@ class FiltersViewController: UIViewController ,UITableViewDataSource, UITableVie
     
     @IBAction func onSearchButton(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
+        var filCategories = [String]()
+        for (row,isSelected) in switchState {
+            if isSelected {
+                print("row Selected",row)
+                filCategories.append(categories[row]["code"]!)
+            }
+        }
+        if filCategories.count > 0 {
+            filters["categories"] = filCategories
+        }
         
-        var filters = [String : AnyObject]()
         
         delegate?.filersViewController?(self, didUpdateFilters: filters)
     }
@@ -252,15 +376,15 @@ class FiltersViewController: UIViewController ,UITableViewDataSource, UITableVie
         return categories
     }
     
-
+    
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using segue.destinationViewController.
+    // Pass the selected object to the new view controller.
     }
     */
-
+    
 }

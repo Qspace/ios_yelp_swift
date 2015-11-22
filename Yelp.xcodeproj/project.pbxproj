@@ -11,6 +11,9 @@
 		040B49611BFE1531007BB369 /* BusinessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040B49601BFE1531007BB369 /* BusinessCell.swift */; };
 		040B49641BFE1707007BB369 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040B49631BFE1707007BB369 /* FiltersViewController.swift */; };
 		040B49661BFE1D40007BB369 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040B49651BFE1D40007BB369 /* SwitchCell.swift */; };
+		0414B1F21C02103200744E37 /* Expand Arrow-24.png in Resources */ = {isa = PBXBuildFile; fileRef = 0414B1F11C02103200744E37 /* Expand Arrow-24.png */; };
+		0414B1F41C0210A800744E37 /* OptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414B1F31C0210A800744E37 /* OptionCell.swift */; };
+		0414B1F71C0236CC00744E37 /* Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 0414B1F61C0236CC00744E37 /* Checked.png */; };
 		222D8A5B19CCF9F900D2DB53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */; };
 		222D8A6019CCF9F900D2DB53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222D8A5E19CCF9F900D2DB53 /* Main.storyboard */; };
 		222D8A6219CCF9F900D2DB53 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222D8A6119CCF9F900D2DB53 /* Images.xcassets */; };
@@ -35,6 +38,9 @@
 		040B49601BFE1531007BB369 /* BusinessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusinessCell.swift; sourceTree = "<group>"; };
 		040B49631BFE1707007BB369 /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		040B49651BFE1D40007BB369 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
+		0414B1F11C02103200744E37 /* Expand Arrow-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Expand Arrow-24.png"; sourceTree = "<group>"; };
+		0414B1F31C0210A800744E37 /* OptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionCell.swift; sourceTree = "<group>"; };
+		0414B1F61C0236CC00744E37 /* Checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checked.png; sourceTree = "<group>"; };
 		222D8A5519CCF9F900D2DB53 /* Yelp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yelp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222D8A5919CCF9F900D2DB53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -77,8 +83,19 @@
 			children = (
 				040B49601BFE1531007BB369 /* BusinessCell.swift */,
 				040B49651BFE1D40007BB369 /* SwitchCell.swift */,
+				0414B1F31C0210A800744E37 /* OptionCell.swift */,
+				0414B1F51C02358900744E37 /* Icons */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		0414B1F51C02358900744E37 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				0414B1F61C0236CC00744E37 /* Checked.png */,
+				0414B1F11C02103200744E37 /* Expand Arrow-24.png */,
+			);
+			name = Icons;
 			sourceTree = "<group>";
 		};
 		222D8A4C19CCF9F900D2DB53 = {
@@ -270,6 +287,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0414B1F21C02103200744E37 /* Expand Arrow-24.png in Resources */,
+				0414B1F71C0236CC00744E37 /* Checked.png in Resources */,
 				222D8A6019CCF9F900D2DB53 /* Main.storyboard in Resources */,
 				222D8A6519CCF9F900D2DB53 /* LaunchScreen.xib in Resources */,
 				222D8A6219CCF9F900D2DB53 /* Images.xcassets in Resources */,
@@ -344,6 +363,7 @@
 				040B49661BFE1D40007BB369 /* SwitchCell.swift in Sources */,
 				222D8A7D19CCFAE000D2DB53 /* YelpClient.swift in Sources */,
 				040B49641BFE1707007BB369 /* FiltersViewController.swift in Sources */,
+				0414B1F41C0210A800744E37 /* OptionCell.swift in Sources */,
 				222D8A5B19CCF9F900D2DB53 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

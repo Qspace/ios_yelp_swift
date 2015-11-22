@@ -91,4 +91,26 @@ class Business: NSObject {
     class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, completion: ([Business]!, NSError!) -> Void) -> Void {
         YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, completion: completion)
     }
+    
+    class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: Float?, completion: ([Business]!, NSError!) -> Void) -> Void {
+        YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, distance: distance, completion: completion)
+    }
+    
+    class func getSortTypeFromString(sortTypeString : String?) -> YelpSortMode? {
+        if sortTypeString == nil {
+            return nil
+        }
+        switch sortTypeString! {
+        case "Best Match":
+            return YelpSortMode.BestMatched
+        case "Distance":
+            return YelpSortMode.Distance
+        case "Hightest Rated":
+            return YelpSortMode.HighestRated
+        default:
+            return YelpSortMode.BestMatched
+        }
+    }
+    
+    
 }

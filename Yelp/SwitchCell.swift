@@ -23,6 +23,7 @@ class SwitchCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        onSwitch.setOn(false, animated: true)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

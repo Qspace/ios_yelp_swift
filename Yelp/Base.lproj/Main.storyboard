@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
-        <!--Yelp-->
+        <!--Businesses View Controller-->
         <scene sceneID="5L9-Uz-lNK">
             <objects>
                 <viewController id="2xI-yr-O5N" customClass="BusinessesViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
@@ -124,12 +124,24 @@
                             <constraint firstItem="fhr-eK-AP8" firstAttribute="top" secondItem="XhR-oz-92f" secondAttribute="top" id="leM-Z6-jd0"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Yelp" id="19M-7y-gGF">
+                    <navigationItem key="navigationItem" id="19M-7y-gGF">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" title="Filters" id="bVh-6d-4MH">
                             <connections>
                                 <segue destination="qPV-eg-3Ub" kind="modal" id="EO8-TU-yPX"/>
                             </connections>
                         </barButtonItem>
+                        <view key="titleView" contentMode="scaleToFill" id="Oue-yN-Dk5">
+                            <rect key="frame" x="75" y="-12" width="171" height="67"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8Ee-Lh-2bA">
+                                    <rect key="frame" x="0.0" y="18" width="171" height="44"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="fhr-eK-AP8" id="Y8B-6I-RNz"/>
@@ -185,6 +197,40 @@
                                         <connections>
                                             <outlet property="onSwitch" destination="ONs-sm-OlG" id="fNx-WW-SG5"/>
                                             <outlet property="switchLabel" destination="GEu-WY-iyM" id="Svf-n9-jlY"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="OptionCell" id="Y5e-Ms-yt4" customClass="OptionCell" customModule="Yelp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="152" width="320" height="60"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y5e-Ms-yt4" id="eBc-aF-fxk">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="59"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Best Match" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="94y-zA-bf6">
+                                                    <rect key="frame" x="8" y="14" width="87" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ixQ-Xu-XPC">
+                                                    <rect key="frame" x="264" y="8" width="48" height="43"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="48" id="62A-nt-xa0"/>
+                                                        <constraint firstAttribute="height" constant="43" id="lXQ-Qi-TR0"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="ixQ-Xu-XPC" secondAttribute="trailing" constant="8" id="HpF-aH-mOC"/>
+                                                <constraint firstItem="94y-zA-bf6" firstAttribute="leading" secondItem="eBc-aF-fxk" secondAttribute="leading" constant="8" id="NsL-aa-44y"/>
+                                                <constraint firstItem="ixQ-Xu-XPC" firstAttribute="centerY" secondItem="eBc-aF-fxk" secondAttribute="centerY" id="SJQ-pe-odp"/>
+                                                <constraint firstItem="94y-zA-bf6" firstAttribute="centerY" secondItem="eBc-aF-fxk" secondAttribute="centerY" id="eOO-yt-De3"/>
+                                                <constraint firstItem="94y-zA-bf6" firstAttribute="centerY" secondItem="eBc-aF-fxk" secondAttribute="centerY" id="owj-YV-mYu"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="fieldLabel" destination="94y-zA-bf6" id="M7f-Ab-mvS"/>
+                                            <outlet property="iconImgView" destination="ixQ-Xu-XPC" id="J1f-Mz-Qrr"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
