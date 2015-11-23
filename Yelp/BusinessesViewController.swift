@@ -55,7 +55,7 @@ class BusinessesViewController: UIViewController ,UITableViewDataSource, UITable
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: Handel sear behavior
+    // MARK: Handle search behavior
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
         searchBar.setShowsCancelButton(true, animated: true)
         return true;
@@ -72,13 +72,11 @@ class BusinessesViewController: UIViewController ,UITableViewDataSource, UITable
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        //searchSettings.searchString = searchBar.text
         searchBar.resignFirstResponder()
         let searchTerm = searchBar.text
         var newFilter = currentFilter
         newFilter["term"] = searchTerm ?? ""
         loadBusineesWithFilter(newFilter)
-        print("Load new filter")
     }
     ///////////////////////////////////////////////////////////////////////////////////
     
