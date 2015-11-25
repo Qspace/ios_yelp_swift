@@ -58,12 +58,12 @@ class BusinessesViewController: UIViewController ,UITableViewDataSource, UITable
     // MARK: Handle search behavior
     func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
         searchBar.setShowsCancelButton(true, animated: true)
-        return true;
+        return true
     }
     
     func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool {
         searchBar.setShowsCancelButton(false, animated: true)
-        return true;
+        return true
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
