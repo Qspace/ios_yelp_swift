@@ -24,6 +24,7 @@ class SwitchCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         onSwitch.setOn(false, animated: true)
+        SetCellColorView(false)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -34,6 +35,16 @@ class SwitchCell: UITableViewCell {
     
     @IBAction func switchValueChanged(sender: AnyObject) {
         delegate?.switchCell?(self, didChangeVaue: onSwitch.on)
+    }
+    
+    func SetCellColorView (isSelected: Bool) {
+        if isSelected == false {
+            print("Unselect color")
+            backgroundColor = QColor.Colors.CellUnselectColor
+        } else {
+            print("Select Color")
+            backgroundColor = QColor.Colors.CellSelectColor
+        }
     }
     
 

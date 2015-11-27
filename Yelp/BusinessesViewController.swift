@@ -12,10 +12,8 @@ class BusinessesViewController: UIViewController ,UITableViewDataSource, UITable
     
     @IBOutlet weak var tableView: UITableView!
     var searchBar = UISearchBar()
-    var searchActive : Bool = false
-
     var currentFilter = [String : AnyObject]()
-    var businesses: [Business]!
+    var businesses = [Business]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,15 +27,6 @@ class BusinessesViewController: UIViewController ,UITableViewDataSource, UITable
         tableView.delegate = self
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
-        
-        //        Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
-        //            self.businesses = businesses
-        //
-        //            for business in businesses {
-        //                println(business.name!)
-        //                println(business.address!)
-        //            }
-        //        })
         
         Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
@@ -81,12 +70,7 @@ class BusinessesViewController: UIViewController ,UITableViewDataSource, UITable
     ///////////////////////////////////////////////////////////////////////////////////
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (businesses != nil) {
-            return businesses.count
-        }
-        else {
-            return 0
-        }
+        return businesses.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -137,13 +121,9 @@ class BusinessesViewController: UIViewController ,UITableViewDataSource, UITable
         
         Business.searchWithTerm(term!, sort: sortType , categories: categories , deals: deal, distance:  distance) {
             (businesses: [Business]!, error: NSError!) -> Void in
-            self.businesses = businesses
+            self.businesses = businesses ?? nil
             self.tableView.reloadData()
         }
-        //        Business.searchWithTerm("Restaurant", sort: nil, categories: categories, deals: nil) { (businesses: [Business]!, error: NSError!) -> Void in
-        //            self.businesses = businesses
-        //            self.tableView.reloadData()
-        //        }
  
     }
     

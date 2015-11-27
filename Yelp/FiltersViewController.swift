@@ -14,6 +14,17 @@ import UIKit
 
 class FiltersViewController: UIViewController ,UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate, OptionCellDelegate {
     
+    // Define all field in filter view
+    let DEAL_FIELD = 0
+    let DISTANCE_FIELD = 1
+    let SORT_FIELD = 2
+    let CATEGORY_FIELD = 3
+    let NUM_FIELD = 4
+    
+    var expandSortCellState = false
+    var expandDistanceCellState = false
+    
+    
     @IBOutlet weak var tableView: UITableView!
     
     weak var delegate: FiltersViewControllerDelegate?
@@ -23,6 +34,7 @@ class FiltersViewController: UIViewController ,UITableViewDataSource, UITableVie
     var switchState = [Int: Bool]()
     
     var distanceArray : [Float?]!
+    var sortTypeArray : [String?]!
     
     
     override func viewDidLoad() {
@@ -31,6 +43,11 @@ class FiltersViewController: UIViewController ,UITableViewDataSource, UITableVie
         //MARK init vaue for filter field
         categories = yelpCategories()
         distanceArray = [nil, 0.3, 1, 5, 20]
+        sortTypeArray = ["Auto", "Best Match", "Distance", "Rating"]
+        
+        // reset option cell expandable status
+        expandSortCellState = false
+        expandDistanceCellState = false
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -48,18 +65,18 @@ class FiltersViewController: UIViewController ,UITableViewDataSource, UITableVie
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 4
+        return NUM_FIELD
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 0:
+        case DEAL_FIELD:
             return ""
-        case 1:
+        case DISTANCE_FIELD:
             return "Distance"
-        case 2:
+        case SORT_FIELD:
             return "Sort by"
-        case 3:
+        case CATEGORY_FIELD:
             return "Category"
         default:
             return ""
@@ -69,69 +86,135 @@ class FiltersViewController: UIViewController ,UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch section {
-        case 0:
+        case DEAL_FIELD:
             return 1
-        case 1:
+        case DISTANCE_FIELD:
             return distanceArray.count
-        case 2:
-            return 3
-        case 3:
+        case SORT_FIELD:
+            return 4
+        case CATEGORY_FIELD:
             return categories.count
         default:
             break
         }
-        return 0
+        return 0 // never jump to this case
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        switch indexPath.section {
+        case SORT_FIELD:
+            if expandSortCellState == false {
+                switch indexPath.row {
+                case 0:
+                    return 50
+                case 1:
+                    return 0
+                case 2:
+                    return 0
+                case 3:
+                    return 0
+                default:
+                    return 0
+                }
+            }
+            else {
+                return 50
+            }
+        case DISTANCE_FIELD:
+            if expandDistanceCellState == false {
+                print("Expand false")
+                switch indexPath.row {
+                case 0:
+                    return 50
+                case 1:
+                    return 0
+                case 2:
+                    return 0
+                case 3:
+                    return 0
+                default:
+                    return 0
+                }
+            } else {
+                return 50
+            }
+        default:
+            return 50
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch indexPath.section {
-        case 0:
+        case DEAL_FIELD:
             
             let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
-            
             cell.switchLabel.text = "Offering a Deal"
             cell.delegate = self
             cell.onSwitch.on = filters["deal"] as? Bool ?? false
             return cell
             
-        case 1:
+        case DISTANCE_FIELD:
             let cell = tableView.dequeueReusableCellWithIdentifier("OptionCell", forIndexPath: indexPath) as! OptionCell
             cell.delegate = self
             print("Distance",indexPath.row)
-            // Set label for each cell
-            if indexPath.row == 0 {
-                cell.fieldLabel.text = "Auto"
+            var fieldName: String?
+            var iconImg: UIImage?
+            if expandDistanceCellState == false {
+                iconImg = UIImage(named: "Expand")
             }
-            else {
-                cell.fieldLabel.text =  String(format: "%g", distanceArray[indexPath.row]!) + " mile"
+            if expandDistanceCellState == true {
+                
+                if filters["distance"] as! Float? == distanceArray[indexPath.row] {
+                    iconImg = UIImage(named: "Checked")
+                } else {
+                    iconImg = nil
+                }
+                
+                // Set label for each cell
+                if indexPath.row == 0 {
+                    fieldName = "Auto"
+                }
+                else {
+                    fieldName =  String(format: "%g", distanceArray[indexPath.row]!) + " mile"
+                }
             }
+            
+            cell.showOptionCellView(fieldName,iconImg: iconImg)
             return cell
             
-        case 2:
+        case SORT_FIELD:
             let cell = tableView.dequeueReusableCellWithIdentifier("OptionCell", forIndexPath: indexPath) as! OptionCell
             cell.delegate = self
-            switch indexPath.row {
-            case 0:
-                cell.fieldLabel.text = "Best Match"
-                break
-            case 1:
-                cell.fieldLabel.text = "Distance"
-                break
-            case 2:
-                cell.fieldLabel.text = "Rating"
-                break
-            default:
-                break
+            var fieldName: String?
+            var iconImg: UIImage?
+            if expandSortCellState == false {
+                iconImg = UIImage(named: "Expand")
             }
+            if expandSortCellState == true {
+                
+                if filters["sort"] as! String? == sortTypeArray[indexPath.row] {
+                    iconImg = UIImage(named: "Checked")
+                } else {
+                    iconImg = nil
+                }
+                
+                // Set label for each cell
+                if indexPath.row == 0 {
+                    fieldName = "Auto"
+                }
+                else {
+                    fieldName =  sortTypeArray[indexPath.row]
+                }
+            }
+            cell.showOptionCellView(fieldName,iconImg: iconImg)
             return cell
-        case 3:
+        case CATEGORY_FIELD:
+            print("reload switch state")
             let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
             cell.switchLabel.text = categories[indexPath.row]["name"]
             // Detect switch change value event
             cell.delegate = self
-            if switchState[indexPath.row] != nil {
-                cell.onSwitch.on = switchState[indexPath.row]!
-            }
+            cell.onSwitch.on = switchState[indexPath.row] ?? false
             //        print("cell \(indexPath.row)",cell.onSwitch.on)
             
             
@@ -145,39 +228,49 @@ class FiltersViewController: UIViewController ,UITableViewDataSource, UITableVie
     func switchCell(switchCell: SwitchCell, didChangeVaue value: Bool) {
         let indexPath = tableView.indexPathForCell(switchCell)!
         switch indexPath.section {
-        case 0:
+        case DEAL_FIELD:
             filters["deal"] = value
-            break;
-        case 3:
+            break
+        case CATEGORY_FIELD:
+            print("switch state change ",indexPath.row)
             switchState[indexPath.row] = value
-            break;
+            break
         default:
-            break;
+            break
             
         }
+        tableView.reloadData()
     }
     
     func optionCell(optionCell: OptionCell, onRowSelect selected: Bool) {
         //        let indexPath = tableView.indexPathForCell(optionCell)'
-
+        
         let index = tableView.indexPathForCell(optionCell)
         if index != nil {
             switch index!.section {
-            case 1:
+            case DISTANCE_FIELD:
                 if selected == true {
+                    expandDistanceCellState = true
                     filters["distance"] = distanceArray[index!.row]
+                    //                    optionCell.setIcon(UIImage(named: "Checked.png"))
+                    tableView.reloadData()
                 }
-                break;
-            case 2:
+                break
+            case SORT_FIELD:
                 if selected == true {
+                    expandSortCellState = true
                     filters["sort"] = optionCell.fieldLabel.text
+                    //                    optionCell.setIcon(UIImage(named: "Checked.png"))
+                    tableView.reloadData()
                 }
-                break;
+                
+                break
             default:
-                break;
+                break
             }
             
         }
+        
     }
     
     

@@ -28,21 +28,28 @@ class OptionCell: UITableViewCell {
     
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        if selected == true {
-            showSelectedView()
-        }
-        else {
-            showInitView()
-        }
+        
+        print("Selected status", selected)
         delegate?.optionCell?(self, onRowSelect: selected)
         // Configure the view for the selected state
     }
     
-    func showSelectedView() {
-        iconImgView.image = UIImage(named: "Checked.png")
+    func showOptionCellView(fieldLabelName: String?, iconImg: UIImage?)
+    {
+//        print("Selected status", selected)
+        SetCellColorView(iconImg != nil)
+        fieldLabel.text = fieldLabelName
+        iconImgView.image = iconImg
+
     }
     
-    func showInitView() {
-        iconImgView.image = nil
+    func SetCellColorView (isSelected: Bool) {
+        if isSelected == false {
+            print("Unselect color")
+            backgroundColor = QColor.Colors.CellUnselectColor
+        } else {
+            print("Select Color")
+            backgroundColor = QColor.Colors.CellSelectColor
+        }
     }
 }
